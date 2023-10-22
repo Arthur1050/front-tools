@@ -1,7 +1,13 @@
-export default function Popup() {
+import style from "./style.module.css";
+
+interface Props {
+    el: HTMLElement
+}
+
+export default function Popup({el}:Props) {
     return(
-        <div>
-            <span>MamaeFalei</span>
+        <div className={style.popup}>
+            <span>{el.tagName}</span>
         </div>
     )
 }

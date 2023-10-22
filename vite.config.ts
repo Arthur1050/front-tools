@@ -12,8 +12,6 @@ export default defineConfig({
         script: 'src/assets/script.tsx',
         loadScript: 'src/assets/loadScript.js',
         index: "index.html"
-        /* index: "src/main.tsx",
-        style: "src/index.css" */
       },
       output: {
         assetFileNames: (assetInfo) => {
