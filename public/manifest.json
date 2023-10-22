@@ -1,0 +1,31 @@
+{
+    "manifest_version": 3,
+    "name": "front-tools",
+    "description": "Helper tool for front-end website development.",
+    "version": "1.0.1",
+    "author": "tostamatias@gmail.com",
+
+    "action": {
+        "default_title": "Config",
+        "default_popup": "index.html"
+    },
+    
+    "content_scripts": [
+        {
+          "js": [
+            "assets/js/loadScript.js"
+          ],
+          "matches": [
+            "<all_urls>"
+          ],
+          "run_at": "document_idle"
+        }
+      ],
+
+      "web_accessible_resources": [
+        {
+          "resources": [ "assets/js/*.js", "script.mjs" ],
+          "matches": [ "<all_urls>" ]
+        }
+      ]
+}
