@@ -2,4 +2,12 @@
     border-radius: .5rem;
     padding: .5rem;
     background-color: #252525;
+    & .tagTarget {
+        & .tagName {
+            color: #f4f4f4;
+        }
+        & .tagClass {
+            color: orange;
+        }
+    }
 }

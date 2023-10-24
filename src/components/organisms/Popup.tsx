@@ -5,9 +5,15 @@ interface Props {
 }
 
 export default function Popup({el}:Props) {
+
     return(
         <div className={style.popup}>
-            <span>{el.tagName}</span>
+            <div className="tagTarget">
+                <span className="tagName">{el.tagName.toLowerCase()}</span>
+                {[...el.classList].map(name => (
+                    <span className="tagClass">.{name.toLowerCase()}</span>
+                ))}
+            </div>
         </div>
     )
 }
