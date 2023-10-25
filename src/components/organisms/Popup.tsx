@@ -38,7 +38,7 @@ function ElementStyle({styles}:{styles: CSSStyleDeclaration}) {
                 {[...styles].map((key) => (
                     <div>
                         <span>{key}</span>: 
-                        <span>{Object(styles)[key]}</span>
+                        <span>{Object(styles)[key]}</span>;
                     </div>
                 ))}
             </div>
