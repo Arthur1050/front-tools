@@ -1,6 +1,6 @@
 import { createRoot } from "react-dom/client";
 import Popup from "../components/organisms/Popup";
-var blockMov:boolean;
+let blockMov:boolean;
 const container = document.createElement('div');
 
 container.style.position = "absolute"
@@ -22,6 +22,6 @@ document.addEventListener('mousemove', (ev) => {
     }
 })
 
-document.addEventListener('keydown', ({key}) => {
-    if (key == 'Alt') blockMov = !blockMov
+document.addEventListener('keydown', ({key, ctrlKey}) => {
+    if ((key == 'q'||key == 'Q') && ctrlKey) blockMov = !blockMov
 })

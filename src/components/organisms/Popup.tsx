@@ -15,7 +15,7 @@ export default function Popup({el}:Props) {
                     {attrs.length ? <Attributes attrs={attrs}/>:''}
                 <span className="tagName">/&gt;</span>
             </div>
-            {el.style.length ? <ElementStyle styles={el.style}/>:''}
+            {el.style.length ? <ElementStyle el={el}/>:''}
         </PopupStyle>
     )
 }
@@ -30,15 +30,21 @@ function Attributes({attrs}:{attrs:Attr[]}) {
     ))
 }
 
-function ElementStyle({styles}:{styles: CSSStyleDeclaration}) {
+function ElementStyle({el}:{el: HTMLElement}) {
+    const {style} = el;
+    function setStyleAttribute({target}:React.FocusEvent) {
+        console.log(target.textContent)
+    }
     return (
         <ElementStyleStyle>
             <div className="elementStyle">element.style  &#123;</div>
             <div className="cssListAttrs">
-                {[...styles].map((key) => (
+                {[...style].map((key) => (
                     <div>
-                        <span>{key}</span>: 
-                        <span>{Object(styles)[key]}</span>;
+                        <span onBlur={ev => setStyleAttribute(ev)} contentEditable>{key}</span>: 
+                        <span onBlur={({target}) => {
+                            Object(style)[key] = target.textContent;
+                        }} contentEditable>{Object(style)[key]}</span>;
                     </div>
                 ))}
             </div>
@@ -90,7 +96,9 @@ const ElementStyleStyle = styled.div`
             color: #fff;
             line-height: 130%;
             span {
-                margin-inline: .25rem;
+                padding-inline: .25rem;
+                padding-bottom: .125rem;
+                cursor: text;
                 &:first-of-type {
                     color: #6FC8CC;
                 }
