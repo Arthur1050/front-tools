@@ -1,4 +1,5 @@
 // import style from "./style.module.css";
+import { useState } from "react";
 import styled from "styled-components";
 
 interface Props {
@@ -31,20 +32,32 @@ function Attributes({attrs}:{attrs:Attr[]}) {
 }
 
 function ElementStyle({el}:{el: HTMLElement}) {
-    const {style} = el;
-    function setStyleAttribute({target}:React.FocusEvent) {
-        console.log(target.textContent)
+    const [style, setStyle] = useState([...el.style])
+
+    function setStyleAttribute({target}:React.FocusEvent, oldKey:string) {
+        const newKey = target.textContent;
+
+        setStyle(style => {
+            if (newKey) {
+                Object(el.style)[newKey] = Object(el.style)[oldKey];
+                newKey != oldKey && (Object(el.style)[oldKey] = '');
+            } 
+            else Object(style)[oldKey] = '';
+        
+            return [...el.style];
+        })
     }
+
     return (
         <ElementStyleStyle>
             <div className="elementStyle">element.style  &#123;</div>
             <div className="cssListAttrs">
-                {[...style].map((key) => (
+                {style.map((key) => (
                     <div>
-                        <span onBlur={ev => setStyleAttribute(ev)} contentEditable>{key}</span>: 
+                        <span onBlur={ev => setStyleAttribute(ev, key)} contentEditable>{key}</span>: 
                         <span onBlur={({target}) => {
-                            Object(style)[key] = target.textContent;
-                        }} contentEditable>{Object(style)[key]}</span>;
+                            Object(el.style)[key] = target.textContent;
+                        }} contentEditable>{Object(el.style)[key]}</span>;
                     </div>
                 ))}
             </div>
