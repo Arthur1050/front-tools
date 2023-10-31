@@ -9,17 +9,20 @@ container.style.zIndex = "9999999"
 
 document.documentElement.appendChild(container);
 
+var targetAux:HTMLElement;
+
 document.addEventListener('mousemove', (ev) => {
+    const target = ev.target as HTMLElement;
     if (!blockMov) {
-        const target = ev.target as HTMLElement;
 
         container.style.left = `${ev.clientX}px`
         container.style.top = `${ev.clientY}px`
 
-        createRoot(container).render(
-            <Popup el={target}/>
+        target != targetAux && createRoot(container).render(
+            <Popup el={target} />
         );
     }
+    targetAux = target;
 })
 
 document.addEventListener('keydown', ({key, ctrlKey}) => {
