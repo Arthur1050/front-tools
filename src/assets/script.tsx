@@ -1,5 +1,6 @@
 import { createRoot } from "react-dom/client";
 import Popup from "../components/organisms/Popup";
+import SystemProvider from "../systemContext";
 let blockMov:boolean;
 const container = document.createElement('div');
 
@@ -11,15 +12,18 @@ document.documentElement.appendChild(container);
 
 var targetAux:HTMLElement;
 
-document.addEventListener('mousemove', (ev) => {
+document.addEventListener('mousemove', async (ev) => {
     const target = ev.target as HTMLElement;
     if (!blockMov) {
+        const data = await fetch(chrome.runtime.getURL("css-properties.json"));
 
         container.style.left = `${ev.clientX}px`
         container.style.top = `${ev.clientY}px`
 
         target != targetAux && createRoot(container).render(
-            <Popup el={target} />
+            <SystemProvider cssProperties={await data.json()}>
+                <Popup el={target} />
+            </SystemProvider>
         );
     }
     targetAux = target;

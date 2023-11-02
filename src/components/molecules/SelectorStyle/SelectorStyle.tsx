@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { CssListAttrs, evMod } from "../ElementStyle/ElementStyle";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { SystemContext } from "../../../systemContext";
 
 interface Props {
     selector: string
@@ -15,7 +16,7 @@ type CSSRuleMod = CSSRule&{
 
 function getSelectorStyle(selector:string) {
     const sheets = document.styleSheets;
-    var styles:[string, CSSStyleDeclaration][] = [];
+    const styles:[string, CSSStyleDeclaration][] = [];
 
     [...sheets].forEach(sheet => {
         // EVITANDO ERRO AO BUSCAR CSS DE STYLESHEETS EXTERNOS (CORS)
@@ -45,7 +46,10 @@ function getSelectorStyle(selector:string) {
 }
 
 export default function SelectorStyle({selector, el}:Props) {
+    const [{cssProperties}] = useContext(SystemContext)
     const styles = getSelectorStyle(selector);
+
+    console.log(cssProperties)
 
     return styles.map(([selectorText, cssStyle]) => {
         if ([...document.querySelectorAll(selectorText)].includes(el)) {
