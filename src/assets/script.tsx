@@ -15,13 +15,11 @@ var targetAux:HTMLElement;
 document.addEventListener('mousemove', async (ev) => {
     const target = ev.target as HTMLElement;
     if (!blockMov) {
-        const data = await fetch(chrome.runtime.getURL("css-properties.json"));
-
         container.style.left = `${ev.clientX}px`
         container.style.top = `${ev.clientY}px`
 
         target != targetAux && createRoot(container).render(
-            <SystemProvider cssProperties={await data.json()}>
+            <SystemProvider >
                 <Popup el={target} />
             </SystemProvider>
         );

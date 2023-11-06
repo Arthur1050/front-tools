@@ -1,4 +1,4 @@
-export type CSSPropertie = {
+export type StylePropertie = {
     [key: string]: {
         moz: boolean,
         webkit: boolean,

@@ -6,27 +6,32 @@ export type evMod = (React.FocusEvent|React.KeyboardEvent)&{
 }
 
 const ElementStyleStyle = styled.div`
-    margin-top: .75rem;
+    margin-top: 12px;
     .elementStyle {
         color: #b9b9b9;
-        font-size: .825rem;
+        font-size: 14px;
         font-weight: 600;
     }
 `
 
 export const CssListAttrs = styled.div`
-    padding-block: .25rem;
-    padding-left: 1rem;
+    padding-block: 4px;
+    padding-left: 16px;
     &>div {
-        font-size: .875rem;
+        display: flex;
+        font-size: 14px;
         color: #fff;
         line-height: 130%;
         span {
-            padding-inline: .25rem;
-            padding-bottom: .125rem;
-            cursor: text;
+            position: relative;
             &:first-of-type {
                 color: #6FC8CC;
+            }
+            p {
+                padding-inline: 4px;
+                padding-bottom: 2px;
+                cursor: text;
+                margin: 0;
             }
         }
     }
@@ -67,26 +72,32 @@ export default function ElementStyle({el}:{el: HTMLElement}) {
             <CssListAttrs>
                 {style.map((key) => (
                     <div>
-                        <span onBlur={(ev) => setStyleAttribute(ev, key)} 
-                            onKeyDown={(ev) => {
-                                if (ev.key == 'Enter') {
-                                    ev.preventDefault();
-                                    ((ev as any).target.blur())
-                                }}
-                            }
-                            contentEditable>
-                                {key}
-                        </span>: 
-                        <span onBlur={(ev) => setStyleValue(ev, key)} 
-                            onKeyDown={(ev) => {
-                                if (ev.key == 'Enter') {
-                                    ev.preventDefault();
-                                    ((ev as any).target.blur())
-                                }}
-                            }
-                            contentEditable>
-                                {Object(el.style)[key]}
-                        </span>;
+                        <span>
+                            <p onBlur={(ev) => setStyleAttribute(ev, key)} 
+                                onKeyDown={(ev) => {
+                                    if (ev.key == 'Enter') {
+                                        ev.preventDefault();
+                                        ((ev as any).target.blur())
+                                    }}
+                                }
+                                contentEditable>
+                                    {key}
+                            </p> 
+                        </span>
+                        :
+                        <span>
+                            <p onBlur={(ev) => setStyleValue(ev, key)} 
+                                onKeyDown={(ev) => {
+                                    if (ev.key == 'Enter') {
+                                        ev.preventDefault();
+                                        ((ev as any).target.blur())
+                                    }}
+                                }
+                                contentEditable>
+                                    {Object(el.style)[key]}
+                            </p>
+                        </span>
+                        ;
                     </div>
                 ))}
             </CssListAttrs>
