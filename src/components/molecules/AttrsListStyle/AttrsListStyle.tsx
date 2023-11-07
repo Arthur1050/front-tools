@@ -8,7 +8,6 @@ export default function AttrsListStyle({cssStyle}:{cssStyle: CSSStyleDeclaration
     const selected = useRef('')
 
     const setStyleAttribute = (target:EventTarget&HTMLElement, oldKey:string) => {
-        setKeyHint([] as any);
 
         // O VALOR DE ATRIBUTO (TAMBÉM DO "VALUE" SE FOR O CASO) PODE VIR TANTO DA LISTA DE SUGESTÕES QUANTO DO INPUT
         const [newKey, newValue] = selected.current ?
@@ -19,15 +18,18 @@ export default function AttrsListStyle({cssStyle}:{cssStyle: CSSStyleDeclaration
         if (newKey) {
             if (Object(cssStyle)[newKey] == undefined) {
                 // PENDENTE: ADICIONAR UM "WARN" AO LADO DO ATRIBUTO
-                return console.log('ATRIBUTO NÃO EXISTENTE!')
+                // return console.log('ATRIBUTO NÃO EXISTENTE!')
             }
             Object(cssStyle)[newKey] = newValue || Object(cssStyle)[oldKey];
             newKey != oldKey && (Object(cssStyle)[oldKey] = '');
         } 
         else Object(cssStyle)[oldKey] = '';
-
-        console.log("Rodei1", target.textContent, oldKey, selected)
+        
+        // target.blur();
+        console.log("Rodei1", newKey, oldKey, selected);
+        setStyle([])
         setStyle([...cssStyle])
+        setKeyHint([] as any);
     }
 
     const setStyleValue = (target:EventTarget&Element, key:string) => {
@@ -67,7 +69,7 @@ export default function AttrsListStyle({cssStyle}:{cssStyle: CSSStyleDeclaration
                     <span>
                         <p spellCheck="false"
                             data-desc="attr"
-                            // onBlur={(ev) => setStyleAttribute(ev.target, key)} 
+                            onBlur={(ev) => setStyleAttribute(ev.target, key)} 
                             onKeyDown={(ev) => keyPressDown(ev, key)}
                             contentEditable>
                                 {key}
