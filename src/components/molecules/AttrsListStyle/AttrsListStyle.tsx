@@ -14,21 +14,24 @@ export default function AttrsListStyle({cssStyle}:{cssStyle: CSSStyleDeclaration
             selected.current.split(': ')
             :
             [target.textContent, null];
+           
+        setStyle(val => {
+            if (newKey) {
+                if (Object(cssStyle)[newKey] == undefined) {
+                    // PENDENTE: ADICIONAR UM "WARN" AO LADO DO ATRIBUTO
+                    // return console.log('ATRIBUTO NÃO EXISTENTE!')
+                }
+                Object(cssStyle)[newKey] = newValue || Object(cssStyle)[oldKey];
+                newKey != oldKey && (Object(cssStyle)[oldKey] = '');
+
+                target.textContent = newKey;
+
+                val[val.indexOf(oldKey)] = newKey
+            } 
+            else Object(cssStyle)[oldKey] = '';
             
-        if (newKey) {
-            if (Object(cssStyle)[newKey] == undefined) {
-                // PENDENTE: ADICIONAR UM "WARN" AO LADO DO ATRIBUTO
-                // return console.log('ATRIBUTO NÃO EXISTENTE!')
-            }
-            Object(cssStyle)[newKey] = newValue || Object(cssStyle)[oldKey];
-            newKey != oldKey && (Object(cssStyle)[oldKey] = '');
-        } 
-        else Object(cssStyle)[oldKey] = '';
-        
-        // target.blur();
-        console.log("Rodei1", newKey, oldKey, selected);
-        setStyle([])
-        setStyle([...cssStyle])
+            return updateListStyle(val);
+        })
         setKeyHint([] as any);
     }
 
@@ -39,7 +42,8 @@ export default function AttrsListStyle({cssStyle}:{cssStyle: CSSStyleDeclaration
         Object(cssStyle)[key] = selected.current || textContent;
 
         (target as HTMLElement).blur();
-        setStyle([...cssStyle])
+
+        setStyle(val => updateListStyle(val))
     }
 
     const keyPressDown = (ev:KeyboardEvent, key:string) => {
@@ -61,17 +65,30 @@ export default function AttrsListStyle({cssStyle}:{cssStyle: CSSStyleDeclaration
             (!keyHint||!keyHint.length) && key != keyHint[0] && desc != keyHint[2] && setKeyHint([key, ev.currentTarget, desc]);
         }
     }
+
+    const updateListStyle = (list:string[]) => {
+        const filtered = [...cssStyle].filter(attr => !list.includes(attr))
+
+        return [...list, ...filtered];
+    }
+
+    const newAttr = (target:EventTarget&HTMLElement) => {
+        if (target.tagName != 'P') {
+            setStyle(val => [...val, '']);
+        }
+    }
     
-    return <CssListAttrs>
-            {style.map((key) => {
+    return <CssListAttrs className="cssListAttrs">
+            {style.map((key, i) => {
                 return (
-                <div>
+                <div onClick={ev => newAttr(ev.target as EventTarget&HTMLElement)}>
                     <span>
                         <p spellCheck="false"
                             data-desc="attr"
                             onBlur={(ev) => setStyleAttribute(ev.target, key)} 
                             onKeyDown={(ev) => keyPressDown(ev, key)}
-                            contentEditable>
+                            contentEditable
+                            onLoad={(ev) => i == style.length - 1 && !key && (ev.target as HTMLElement).focus()}>
                                 {key}
                         </p>
                         {keyHint.length&&keyHint[0] == key&&keyHint[2] == 'attr' ? <AutoCompleteList selected={selected} inputEl={keyHint[1]} />:''}

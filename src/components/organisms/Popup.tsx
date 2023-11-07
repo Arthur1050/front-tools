@@ -43,7 +43,7 @@ const PopupStyle = styled.div`
     }
     max-width: 300px;
     font-family: 'Inter';
-    font-size: 16px;
+    font-size: 14px;
     border-radius: .5rem;
     padding: .5rem;
     background-color: #252525;

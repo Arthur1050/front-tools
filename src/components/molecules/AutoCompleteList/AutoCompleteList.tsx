@@ -39,14 +39,16 @@ export default function AutoCompleteList({AttrKey='', inputEl, selected}:Props) 
                         } 
                     };
                 }
+                const ordenedList = [...listItems.sort((a) => a.startsWith(text.trim())?-1:1)]
 
-                return [...listItems.sort((a) => a.startsWith(text.trim())?-1:1)];
+                selected.current = ordenedList.length ? ordenedList[0] :'';
+
+                return ordenedList;
             })
         }
     }
 
     const keyPress = (event:KeyboardEvent&KeyboardEventR) => {
-        console.log("Rodei2")
         switch(event.key) {
             case 'ArrowDown':
                 event.preventDefault();
@@ -73,7 +75,7 @@ export default function AutoCompleteList({AttrKey='', inputEl, selected}:Props) 
             default: 
                 setSelect(0);
                 loadList(event.currentTarget.textContent||'');
-                list.length ? (selected.current = list[0]) : (selected.current = '');
+                !list.length && (selected.current = '');
         }
     }
 

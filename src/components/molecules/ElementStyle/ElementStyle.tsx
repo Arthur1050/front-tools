@@ -19,7 +19,7 @@ export const CssListAttrs = styled.div`
     padding-left: 16px;
     &>div {
         display: flex;
-        font-size: 14px;
+        font-size: 13px;
         color: #fff;
         line-height: 130%;
         span {
