@@ -1,6 +1,6 @@
 // import style from "./style.module.css";
 import styled from "styled-components";
-import ElementStyle from "../molecules/ElementStyle/ElementStyle";
+//import ElementStyle from "../molecules/ElementStyle/ElementStyle";
 import SelectorStyle from "../molecules/SelectorStyle/SelectorStyle";
 
 interface Props {
@@ -18,8 +18,13 @@ export default function Popup({el}:Props) {
                     {attrs.length ? <Attributes attrs={attrs}/>:''}
                 <span className="tagName">/&gt;</span>
             </div>
-            {el.style.length ? <ElementStyle el={el}/>:''}
-            {classList.length ? [...classList].map(cl => <SelectorStyle selector={cl} el={el} />):''}
+            <div className="tagStyles">
+                {/* el.style.length ? <ElementStyle el={el}/>:'' */}
+                {el.style.length ? <SelectorStyle el={el} />:''}
+                <SelectorStyle selector={el.tagName} el={el} />
+                {el.id ? <SelectorStyle selector={'#'+el.id} el={el} />:''}
+                {classList.length ? [...classList].map(cl => <SelectorStyle selector={'.'+cl} el={el} />):''}
+            </div>
         </PopupStyle>
     )
 }
@@ -60,6 +65,27 @@ const PopupStyle = styled.div`
                 color: #CCEA8D;
                 word-break: break-word;
             }
+        }
+    }
+    .tagStyles {
+        max-height: 44vh;
+        overflow-y: auto;
+        margin-top: 12px;
+        &::-webkit-scrollbar {
+            width: 12px;
+        }
+        &::-webkit-scrollbar-thumb {
+            background-color: #888888;
+            border: 4px solid #242424;
+            border-radius: 99px;
+            box-shadow: unset;
+            -webkit-box-shadow: unset;
+        }
+        &::-webkit-scrollbar-track {
+            border-radius: 99px;
+            background-color: transparent;
+            box-shadow: unset;
+            -webkit-box-shadow: unset;
         }
     }
 `

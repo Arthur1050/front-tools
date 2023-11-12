@@ -75,11 +75,12 @@ export default function AutoCompleteList({AttrKey='', inputEl, selected}:Props) 
             default: 
                 setSelect(0);
                 loadList(event.currentTarget.textContent||'');
-                !list.length && (selected.current = '');
         }
     }
 
     useEffect(() => {
+        !list.length && (selected.current = '');
+
         inputEl.addEventListener('keyup', keyPress as EventListenerOrEventListenerObject);
     
         return () => {

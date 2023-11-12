@@ -22,6 +22,11 @@ export const CssListAttrs = styled.div`
         font-size: 13px;
         color: #fff;
         line-height: 130%;
+        border-radius: 4px;
+        line-height: 14px;
+        &:hover {
+            background-color: #313131;
+        }
         span {
             position: relative;
             &:first-of-type {

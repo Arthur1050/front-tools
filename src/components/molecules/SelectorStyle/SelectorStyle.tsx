@@ -3,15 +3,15 @@ import AttrsListStyle from "../AttrsListStyle/AttrsListStyle";
 import { SelectorStyleStyle } from "./style";
 
 interface Props {
-    selector: string
+    selector?: string
     el: HTMLElement
 }
 
 export default function SelectorStyle({selector, el}:Props) {
-    const styles = getStyleSelector(selector);
+    const styles = selector ? getStyleSelector(selector) : [['element.style', el.style]] as [string, CSSStyleDeclaration][];
 
     return styles.map(([selectorText, cssStyle]) => {
-        if ([...document.querySelectorAll(selectorText)].includes(el)) {
+        if (!selector || [...document.querySelectorAll(selectorText)].includes(el)) {
             return(
                 <SelectorStyleStyle>
                     <div><span className="selectorName">{selectorText}</span>  &#123;</div>
