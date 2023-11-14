@@ -8,6 +8,7 @@ interface Props {
 }
 
 export default function Popup({el}:Props) {
+
     const attrs = [...el.attributes];
     const {classList} = el;
 
