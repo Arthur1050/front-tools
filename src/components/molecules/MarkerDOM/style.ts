@@ -21,5 +21,9 @@ export const MarkerDOMStyle = styled.div<Props>`
     `}
     ${props => props.border && css`
         border: 1px solid #5d28ff73;
+        & > * {
+            border: 1px solid #5d28ff73;
+            border-style: dashed;
+        }
     `}
 `

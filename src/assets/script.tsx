@@ -32,15 +32,13 @@ document.addEventListener('mousemove', async (ev) => {
                     <Popup el={target} />
                 </SystemProvider>
             );
+            
             createRoot(marker).render(
                 <SystemProvider >
                     <MarkerDOM el={target} />
                 </SystemProvider>
             );
         } 
-
-
-
         movePopup({popup: container, x: ev.pageX, y: ev.pageY})
     }
 
