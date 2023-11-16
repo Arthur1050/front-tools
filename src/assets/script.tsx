@@ -19,6 +19,15 @@ document.documentElement.appendChild(container);
 document.documentElement.appendChild(marker);
 
 var targetAux:HTMLElement;
+var moveType:number;
+
+(
+    async () => {
+        moveType = (await chrome.storage.local.get('moveType')).moveType;
+        moveType == 1 && (container.style.transition = '100ms all ease-out');
+    }
+)()
+
 
 document.addEventListener('mousemove', async (ev) => {
     const target = ev.target as HTMLElement;
@@ -38,8 +47,11 @@ document.addEventListener('mousemove', async (ev) => {
                     <MarkerDOM el={target} />
                 </SystemProvider>
             );
+            if (moveType && moveType == 1) {
+                movePopup({popup: container, target, moveType})
+            }
         } 
-        movePopup({popup: container, x: ev.pageX, y: ev.pageY})
+        moveType && moveType == 2 && movePopup({popup: container, target, moveType})
     }
 
     targetAux = target;
@@ -48,3 +60,11 @@ document.addEventListener('mousemove', async (ev) => {
 document.addEventListener('keydown', ({key, ctrlKey}) => {
     if ((key == 'q'||key == 'Q') && ctrlKey) blockMov = !blockMov
 })
+
+chrome.storage.onChanged.addListener((changes, namespace) => {
+    if (namespace == 'local') {
+        for (let [key, { newValue }] of Object.entries(changes)) {
+          key == 'moveType' && newValue == 2 && (container.style.transition = '')
+        }
+    }
+});

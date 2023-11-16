@@ -2,6 +2,7 @@
 import styled from "styled-components";
 //import ElementStyle from "../molecules/ElementStyle/ElementStyle";
 import SelectorStyle from "../molecules/SelectorStyle/SelectorStyle";
+import { SystemObj } from "../../systemContext";
 
 interface Props {
     el: HTMLElement
@@ -47,7 +48,7 @@ const PopupStyle = styled.div`
         font-family: 'Inter';
         src: url(${chrome.runtime.getURL("fonts/Inter-VariableFont.ttf")}) format('truetype');
     }
-    max-width: 300px;
+    max-width: ${SystemObj.maxWidth}px;
     font-family: 'Inter';
     font-size: 14px;
     border-radius: .5rem;
@@ -69,7 +70,7 @@ const PopupStyle = styled.div`
         }
     }
     .tagStyles {
-        max-height: 44vh;
+        max-height: ${SystemObj.maxWidth}px;
         overflow-y: auto;
         margin-top: 12px;
         &::-webkit-scrollbar {

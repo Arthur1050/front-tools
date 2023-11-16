@@ -7,17 +7,17 @@ interface Props {
 }
 
 export default function MarkerDOM({el}:Props) {
-    const [system] = useContext(SystemContext)
+    const [{viewTargetBorderSel, viewTargetSel}] = useContext(SystemContext)
     var childs:Element[] = [];
 
-    if (system.viewTargetBorderSel) {
+    if (viewTargetBorderSel) {
         childs = [...el.querySelectorAll('& > *')];
     }
 
     const {x, y, height, width} = el.getBoundingClientRect();
 
-    return system.viewTargetSel ? 
-        <MarkerDOMStyle border={system.viewTargetBorderSel} height={height} width={width} x={x + scrollX} y={y + scrollY}>
+    return viewTargetSel ? 
+        <MarkerDOMStyle border={viewTargetBorderSel} height={height} width={width} x={x + scrollX} y={y + scrollY}>
             {childs.map(child => {
                 const rects = child.getBoundingClientRect();
 

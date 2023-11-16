@@ -7,10 +7,10 @@ function App() {
   const [, update] = useState(false)
   const test = useRef<HTMLInputElement>(null)
 
-  const changeConfig = (propertie:string) => {
+  const changeConfig = (propertie:string, opt:null|number = null) => {
     setSystem(val => {
 
-      val[propertie] = !val[propertie];
+      val[propertie] = opt || !val[propertie];
 
       chrome.storage.local.set(val);
 
@@ -23,6 +23,20 @@ function App() {
     <>
     <main>
       <div>
+        <div>
+          <p>Tipo de movimentação</p>
+          <div>
+            <label>
+              <input onChange={() => changeConfig('moveType', 0)} type="radio" name="moveType" />
+            </label>
+            <label>
+              <input onChange={() => changeConfig('moveType', 1)} type="radio" name="moveType" />
+            </label>
+            <label>
+              <input onChange={() => changeConfig('moveType', 2)} type="radio" name="moveType" />
+            </label>
+          </div>
+        </div>
         <p>Target</p>
         <label>
           <input type="checkbox" ref={test} checked={test.current?.checked||system.viewTargetSel} onChange={() => changeConfig('viewTargetSel')} />
