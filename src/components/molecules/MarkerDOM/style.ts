@@ -13,6 +13,9 @@ export const MarkerDOMStyle = styled.div<Props>`
     z-index: 999999;
     background-color: #5d28ff26;
     box-sizing: border-box;
+    & * {
+        box-sizing: border-box;
+    }
     ${({width, height, x, y}) => css`
         width: ${width}px;
         height: ${height}px;

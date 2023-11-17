@@ -15,8 +15,8 @@ container.style.pointerEvents = "none"
 marker.style.zIndex = "999999"
 marker.style.pointerEvents = "none"
 
-document.documentElement.appendChild(container);
-document.documentElement.appendChild(marker);
+const rootContainer = createRoot(document.documentElement.appendChild(container));
+const rootMarker = createRoot(document.documentElement.appendChild(marker));
 
 var targetAux:HTMLElement;
 var moveType:number;
@@ -36,17 +36,18 @@ document.addEventListener('mousemove', async (ev) => {
 
     if (!blockMov && !container.contains(target)) {
         if (target != targetAux) {
-            createRoot(container).render(
+            rootContainer.render(
                 <SystemProvider >
                     <Popup el={target} />
                 </SystemProvider>
             );
             
-            createRoot(marker).render(
+            rootMarker.render(
                 <SystemProvider >
                     <MarkerDOM el={target} />
                 </SystemProvider>
             );
+
             if (moveType && moveType == 1) {
                 movePopup({popup: container, target, moveType})
             }
