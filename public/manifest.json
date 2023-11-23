@@ -19,6 +19,7 @@
           "matches": [
             "<all_urls>"
           ],
+          "exclude_matches": ["http://localhost/"],
           "run_at": "document_idle"
         }
       ],

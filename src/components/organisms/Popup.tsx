@@ -1,47 +1,46 @@
-// import style from "./style.module.css";
 import styled from "styled-components";
-//import ElementStyle from "../molecules/ElementStyle/ElementStyle";
 import SelectorStyle from "../molecules/SelectorStyle/SelectorStyle";
-import { SystemObj } from "../../systemContext";
+import { SystemContext, SystemObj } from "../../systemContext";
+import TagTarget from "../molecules/TagTarget/TagTarget";
+import {useLayoutEffect, useContext} from 'react'
+import { movePopup } from "../../helpers/movePopup";
 
 interface Props {
     el: HTMLElement
 }
 
 export default function Popup({el}:Props) {
-
-    const attrs = [...el.attributes];
+    const [{container, moveType}] = useContext(SystemContext)
     const {classList} = el;
+    
+    useLayoutEffect(() => {
+        if (container && moveType && moveType == 1) {
+            container.style.transition = '100ms all ease-out'
+            movePopup({popup: container, target: el, moveType})
+        }
+    }, [el])
 
     return(
         <PopupStyle>
-            <div className="tagTarget">
-                <span className="tagName">&lt;{el.tagName.toLowerCase()}</span>
-                    {attrs.length ? <Attributes attrs={attrs}/>:''}
-                <span className="tagName">/&gt;</span>
-            </div>
-            <div className="tagStyles">
-                {/* el.style.length ? <ElementStyle el={el}/>:'' */}
-                {el.style.length ? <SelectorStyle el={el} />:''}
-                <SelectorStyle selector={el.tagName} el={el} />
-                {el.id ? <SelectorStyle selector={'#'+el.id} el={el} />:''}
-                {classList.length ? [...classList].map(cl => <SelectorStyle selector={'.'+cl} el={el} />):''}
-            </div>
+            <TagTarget el={el} />
+            ${
+                haveStyles(el) ? 
+                <div className="tagStyles">
+                    {/* el.style.length ? <ElementStyle el={el}/>:'' */}
+                    {el.style.length ? <SelectorStyle el={el} />:''}
+                    <SelectorStyle selector={el.tagName} el={el} />
+                    {el.id ? <SelectorStyle selector={'#'+el.id} el={el} />:''}
+                    {classList.length ? [...classList].map(cl => <SelectorStyle selector={'.'+cl} el={el} />):''}
+                </div> : ''
+            }
+            
         </PopupStyle>
     )
 }
 
-function Attributes({attrs}:{attrs:Attr[]}) {
-    return attrs.map(attr => (
-        <span className="tagAttr">
-            {attr.name.toLowerCase()}="
-                <span className="tagValues">{attr.value.toLowerCase()}</span>
-            "
-        </span>
-    ))
+function haveStyles(element:HTMLElement) {
+    return !!(element.style.length || element.id || element.classList.length)
 }
-
-
 
 const PopupStyle = styled.div`
     @font-face {
@@ -54,23 +53,8 @@ const PopupStyle = styled.div`
     border-radius: .5rem;
     padding: .5rem;
     background-color: #252525;
-    .tagTarget {
-        display: flex;
-        flex-wrap: wrap;
-        gap: .25rem;
-        .tagName {
-            color: #A1C7E0;
-        }
-        .tagAttr {
-            color: #89D49A;
-            .tagValues {
-                color: #CCEA8D;
-                word-break: break-word;
-            }
-        }
-    }
     .tagStyles {
-        max-height: ${SystemObj.maxWidth}px;
+        max-height: ${SystemObj.maxHeight}px;
         overflow-y: auto;
         margin-top: 12px;
         &::-webkit-scrollbar {

@@ -5,7 +5,10 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
+  color: #f4f4f4;
   background-color: #242424;
+
+  box-sizing: border-box;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -24,11 +27,15 @@ a:hover {
 }
 
 body {
+  background-image: linear-gradient(130deg, #4f4f4f 0%, #3d3d3d 100%);
+  /* color: #f4f4f4; */
   margin: 0;
   display: flex;
   place-items: center;
-  min-width: 100vw;
-  min-height: 100vh;
+  width: 270px;
+  height: 400px;
+  font-size: 75%;
+  overflow: hidden;
 }
 
 h1 {
@@ -36,7 +43,7 @@ h1 {
   line-height: 1.1;
 }
 
-@media (prefers-color-scheme: light) {
+/* @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
     background-color: #ffffff;
@@ -47,4 +54,4 @@ h1 {
   button {
     background-color: #f9f9f9;
   }
-}
+} */
