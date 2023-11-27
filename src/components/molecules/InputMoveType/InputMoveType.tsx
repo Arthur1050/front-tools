@@ -12,8 +12,8 @@ interface Props {
 export default function InputMoveType({children, label, selected, onclick, name}:Props) {
     const input = useRef<HTMLInputElement>(null)
     return(
-        <InputMoveTypeStyle onClick={onclick} selected={input.current?.checked}>
-            <input ref={input} checked={selected} type="radio" name={name} />
+        <InputMoveTypeStyle onClick={onclick} selected={selected}>
+            <input ref={input} defaultChecked={selected} checked={input.current?.checked} type="radio" name={name} />
             {children}
             <span>{label}</span>
         </InputMoveTypeStyle>

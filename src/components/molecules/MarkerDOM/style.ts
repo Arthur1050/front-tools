@@ -6,12 +6,12 @@ interface Props {
     width: number
     height: number
     border: boolean
+    background: boolean
 }
 
 export const MarkerDOMStyle = styled.div<Props>`
     position: absolute;
     z-index: 999999;
-    background-color: #5d28ff26;
     box-sizing: border-box;
     & * {
         box-sizing: border-box;
@@ -28,5 +28,8 @@ export const MarkerDOMStyle = styled.div<Props>`
             border: 1px solid #5d28ff73;
             border-style: dashed;
         }
+    `}
+    ${({background}) => background && css`
+        background-color: #5d28ff26;
     `}
 `

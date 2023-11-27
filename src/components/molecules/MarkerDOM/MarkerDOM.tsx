@@ -16,8 +16,8 @@ export default function MarkerDOM({el}:Props) {
 
     const {x, y, height, width} = el.getBoundingClientRect();
 
-    return viewTargetSel ? 
-        <MarkerDOMStyle border={viewTargetBorderSel} height={height} width={width} x={x + scrollX} y={y + scrollY}>
+    return viewTargetBorderSel || viewTargetSel ? 
+        <MarkerDOMStyle border={viewTargetBorderSel} background={viewTargetSel} height={height} width={width} x={x + scrollX} y={y + scrollY}>
             {childs.map(child => {
                 const rects = child.getBoundingClientRect();
 

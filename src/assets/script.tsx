@@ -21,8 +21,8 @@ class CreatePopup {
         this.rootMarker = createRoot(document.documentElement.appendChild(this.marker));
         this.blockMov = false;
 
-        this.moveTypeDefine();
         this.styleElements();
+        this.moveTypeDefine();
 
         document.addEventListener("mousemove", (ev) => this.renderAll(ev))
 
@@ -33,36 +33,54 @@ class CreatePopup {
         chrome.storage.onChanged.addListener((changes, namespace) => {
             if (namespace == 'local') {
                 for (let [key, { newValue }] of Object.entries(changes)) {
-                  key == 'moveType' && newValue == 2 && (CreatePopup.container.style.transition = '')
+                    if ( key == 'moveType') {
+                        this.moveType = +newValue;
+                        if (newValue == 2) {
+                            CreatePopup.container.style.transition = ''
+                        }
+
+                        if (!(+newValue)) this.destroy();
+                    }
                 }
             }
         });
     }
 
+    create() {
+
+    }
+
+    destroy() {
+        CreatePopup.container.innerHTML = '';
+        this.marker.innerHTML = '';
+    }
+
     renderAll(ev:MouseEvent) {
-        const {moveType, rootContainer, rootMarker, blockMov} = this;
-        const target = ev.target as HTMLElement;
-
-        CreatePopup.container.style.pointerEvents = blockMov ? "all" : "none";
-
-        if (!blockMov && !CreatePopup.container.contains(target)) {
-            if (target != this.targetAux) {
-                rootContainer.render(
-                    <SystemProvider container={this.container}>
-                        <Popup el={target} />
-                    </SystemProvider>
-                );
+        if (this.moveType) {
+            const {moveType, rootContainer, rootMarker, blockMov} = this;
+            const target = ev.target as HTMLElement;
     
-                rootMarker.render(
-                    <SystemProvider container={this.container}>
-                        <MarkerDOM el={target} />
-                    </SystemProvider>
-                );
-            } 
-            moveType && moveType == 2 && movePopup({popup: CreatePopup.container, target, moveType})
+            CreatePopup.container.style.pointerEvents = blockMov ? "all" : "none";
+    
+            if (!blockMov && !CreatePopup.container.contains(target)) {
+                if (target != this.targetAux) {
+                    rootContainer.render(
+                        <SystemProvider container={this.container}>
+                            <Popup el={target} />
+                        </SystemProvider>
+                    );
+        
+                    rootMarker.render(
+                        <SystemProvider container={this.container}>
+                            <MarkerDOM el={target} />
+                        </SystemProvider>
+                    );
+                } 
+                moveType && moveType == 2 && movePopup({popup: CreatePopup.container, target, moveType})
+            }
+    
+            this.targetAux = target;
         }
-
-        this.targetAux = target;
     }
 
     get container() {
@@ -88,9 +106,13 @@ async function getMoveType() {
     return await (await chrome.storage.local.get('moveType')).moveType
 }
 
-if (!CreatePopup.container) {
-    new CreatePopup();
-}
+!(
+    async () => {
+        if (!CreatePopup.container) {
+            new CreatePopup();
+        }
+    }
+)()
 
 /* let blockMov:boolean;
 const container = document.createElement('div');

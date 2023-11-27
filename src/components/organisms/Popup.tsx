@@ -23,7 +23,7 @@ export default function Popup({el}:Props) {
     return(
         <PopupStyle>
             <TagTarget el={el} />
-            ${
+            {
                 haveStyles(el) ? 
                 <div className="tagStyles">
                     {/* el.style.length ? <ElementStyle el={el}/>:'' */}

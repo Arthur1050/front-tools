@@ -30,8 +30,19 @@ export default function SystemProvider({children, container}:Props) {
 
     useEffect(() => {
         chrome.storage?.local.get(Object.keys(system)).then(val => {
-            setSystem(Object(val))
+            setSystem({...system, ...Object(val)})
         })
+
+        chrome.storage.onChanged.addListener((changes, namespace) => {
+            if (namespace == 'local') {
+                for (let [key, { newValue }] of Object.entries(changes)) {
+                    setSystem(sys => {
+                        sys[key] = newValue;
+                        return {...sys}
+                    })
+                }
+            }
+        });
     }, [])
 
     return <SystemContext.Provider value={[{...system, container: container||null}, setSystem]}>

@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react'
+import { useState, useContext, useLayoutEffect } from 'react'
 import {PowerOff, MousePointerSquare, RectangleVertical, MousePointer} from 'lucide-react';
 import './App.css'
 import { SystemContext } from './systemContext';
@@ -10,8 +10,7 @@ function App() {
   const [system, setSystem] = useContext(SystemContext);
   const [, update] = useState(false)
   // const test = useRef<HTMLInputElement>(null)
-
-  const changeConfig = (propertie:string, opt:null|number = null) => {
+  const changeConfig = (propertie:string, opt:null|number|string = null) => {
     setSystem(val => {
 
       val[propertie] = opt || !val[propertie];
@@ -23,6 +22,11 @@ function App() {
     update(i => !i);
   }
 
+  useLayoutEffect(() => {
+    console.log(system);
+    update(i => !i)
+  }, [system])
+
   return (
     <>
     <main>
@@ -31,16 +35,16 @@ function App() {
         <div>
           <TitleSectin>Tipo de movimentação</TitleSectin>
           <div style={{display: 'flex', justifyContent: 'center', gap:'20px'}}>
-            <InputMoveType label='OFF' name='moveType' onclick={() => changeConfig('moveType', 0)} selected={!system.moveType}>
+            <InputMoveType label='OFF' name='moveType' onclick={() => changeConfig('moveType', '0')} selected={+system.moveType == 0}>
               <PowerOff />
             </InputMoveType>
-            <InputMoveType label='Target' name='moveType' onclick={() => changeConfig('moveType', 1)} selected={system.moveType == 1}>
+            <InputMoveType label='Target' name='moveType' onclick={() => changeConfig('moveType', 1)} selected={+system.moveType == 1}>
               <div>
                 <MousePointerSquare />
                 <RectangleVertical size={20} style={{marginBottom: '-5px', marginLeft: '-2px'}} />
               </div>
             </InputMoveType>
-            <InputMoveType label='Cursor' name='moveType' onclick={() => changeConfig('moveType', 2)} selected={system.moveType == 2}>
+            <InputMoveType label='Cursor' name='moveType' onclick={() => changeConfig('moveType', 2)} selected={+system.moveType == 2}>
               <div>
                 <MousePointer size={14} />
                 <RectangleVertical style={{marginBottom: '-10px', marginLeft: '-2px'}} />
