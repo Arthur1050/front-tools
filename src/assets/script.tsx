@@ -6,7 +6,7 @@ import MarkerDOM from "../components/molecules/MarkerDOM/MarkerDOM";
 import {Root} from 'react-dom/client';
 
 class CreatePopup {
-    static container:HTMLDivElement;
+    static container:HTMLDivElement|null;
     marker = document.createElement('div')
     moveType:number = 1;
 
@@ -35,7 +35,7 @@ class CreatePopup {
                 for (let [key, { newValue }] of Object.entries(changes)) {
                     if ( key == 'moveType') {
                         this.moveType = +newValue;
-                        if (newValue == 2) {
+                        if (newValue == 2 && CreatePopup.container) {
                             CreatePopup.container.style.transition = ''
                         }
 
@@ -51,12 +51,14 @@ class CreatePopup {
     }
 
     destroy() {
-        CreatePopup.container.innerHTML = '';
+        CreatePopup.container && (CreatePopup.container.innerHTML = '');
+        CreatePopup.container = null;
         this.marker.innerHTML = '';
     }
 
     renderAll(ev:MouseEvent) {
-        if (this.moveType) {
+        if (this.moveType && CreatePopup.container) {
+
             const {moveType, rootContainer, rootMarker, blockMov} = this;
             const target = ev.target as HTMLElement;
     
@@ -89,9 +91,11 @@ class CreatePopup {
     }
 
     styleElements() {
-        CreatePopup.container.style.position = "absolute";
-        CreatePopup.container.style.zIndex = "9999999";
-        CreatePopup.container.style.pointerEvents = "none";
+        if (CreatePopup.container) {
+            CreatePopup.container.style.position = "absolute";
+            CreatePopup.container.style.zIndex = "9999999";
+            CreatePopup.container.style.pointerEvents = "none";
+        }
 
         this.marker.style.zIndex = "999999";
         this.marker.style.pointerEvents = "none"
@@ -108,11 +112,21 @@ async function getMoveType() {
 
 !(
     async () => {
-        if (!CreatePopup.container) {
+        if (!CreatePopup.container && +(await getMoveType())) {
             new CreatePopup();
         }
     }
 )()
+
+chrome.storage.onChanged.addListener((changes, namespace) => {
+    if (namespace == 'local') {
+        for (let [key, { newValue }] of Object.entries(changes)) {
+            if ( key == 'moveType' && +newValue && !CreatePopup.container) {
+                new CreatePopup();
+            }
+        }
+    }
+});
 
 /* let blockMov:boolean;
 const container = document.createElement('div');

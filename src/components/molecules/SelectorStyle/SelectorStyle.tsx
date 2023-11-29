@@ -9,9 +9,9 @@ interface Props {
 
 export default function SelectorStyle({selector, el}:Props) {
     const styles = selector ? getStyleSelector(selector) : [['element.style', el.style]] as [string, CSSStyleDeclaration][];
-
+    
     return styles.map(([selectorText, cssStyle]) => {
-        if (!selector || [...document.querySelectorAll(selectorText)].includes(el)) {
+        if (/* !selector ||  */[...document.querySelectorAll(selectorText)].includes(el)) {
             return(
                 <SelectorStyleStyle>
                     <div><span className="selectorName">{selectorText}</span>  &#123;</div>
