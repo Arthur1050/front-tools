@@ -9,9 +9,11 @@ export default function AttrsListStyle({cssStyle}:{cssStyle: CSSStyleDeclaration
     const newAttrEl = useRef<HTMLParagraphElement|null>(null);
 
     useLayoutEffect(() => {
-        console.log(style, cssStyle)
         newAttrEl.current && newAttrEl.current.focus();
     })
+    useLayoutEffect(() => {
+        setStyle([...cssStyle])
+    }, [cssStyle])
 
     const setStyleAttribute = (target:EventTarget&HTMLElement, oldKey:string) => {
 
