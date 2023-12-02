@@ -4,9 +4,11 @@ interface Props {
     popup: HTMLElement
     target: HTMLElement
     moveType: number
+    pageX?: number
+    pageY?: number
 }
 
-export const movePopup = ({popup, target, moveType}:Props) => {
+export const movePopup = ({popup, target, moveType, pageX = 0, pageY = 0}:Props) => {
     const {x, y, right, bottom} = target.getBoundingClientRect();
     const {width, height} = popup.getBoundingClientRect();
     // const {maxWidth, maxHeight} = SystemObj;
@@ -31,8 +33,8 @@ export const movePopup = ({popup, target, moveType}:Props) => {
         style.left = `${position.left}px`;
         style.top = `${position.top}px`;
     } else {
-        style.left = `${(width + x + 16) > innerWidth ? x - width - 16 : x + 16}px`;
-        style.top = `${(height + y) > innerHeight ? y - height : y}px`;
+        style.left = `${(width + pageX + 16) > innerWidth ? pageX - width - 16 : pageX + 16}px`;
+        style.top = `${(height + pageY) > innerHeight ? pageY - height : pageY}px`;
     }
 }
 

@@ -51,9 +51,8 @@ class CreatePopup {
     }
 
     destroy() {
-        CreatePopup.container && (CreatePopup.container.innerHTML = '');
-        CreatePopup.container = null;
-        this.marker.innerHTML = '';
+        CreatePopup.container?.remove();
+        this.marker.remove();
     }
 
     renderAll(ev:MouseEvent) {
@@ -65,6 +64,8 @@ class CreatePopup {
             CreatePopup.container.style.pointerEvents = blockMov ? "all" : "none";
     
             if (!blockMov && !CreatePopup.container.contains(target)) {
+                const {pageX, pageY} = ev;
+
                 if (target != this.targetAux) {
                     rootContainer.render(
                         <SystemProvider container={this.container}>
@@ -78,7 +79,7 @@ class CreatePopup {
                         </SystemProvider>
                     );
                 } 
-                moveType && moveType == 2 && movePopup({popup: CreatePopup.container, target, moveType})
+                moveType && moveType == 2 && movePopup({popup: CreatePopup.container, target, moveType, pageX, pageY})
             }
     
             this.targetAux = target;
